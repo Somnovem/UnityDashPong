@@ -1,0 +1,17 @@
+D:\Projects\AuthServer\AuthServer\ServerConsole\bin\Debug\ServerConsole.exe.config
+D:\Projects\AuthServer\AuthServer\ServerConsole\bin\Debug\ServerConsole.exe
+D:\Projects\AuthServer\AuthServer\ServerConsole\bin\Debug\ServerConsole.pdb
+D:\Projects\AuthServer\AuthServer\ServerConsole\bin\Debug\EntityFramework.dll
+D:\Projects\AuthServer\AuthServer\ServerConsole\bin\Debug\EntityFramework.SqlServer.dll
+D:\Projects\AuthServer\AuthServer\ServerConsole\bin\Debug\System.Data.SQLite.dll
+D:\Projects\AuthServer\AuthServer\ServerConsole\bin\Debug\System.Data.SQLite.EF6.dll
+D:\Projects\AuthServer\AuthServer\ServerConsole\bin\Debug\System.Data.SQLite.Linq.dll
+D:\Projects\AuthServer\AuthServer\ServerConsole\bin\Debug\EntityFramework.xml
+D:\Projects\AuthServer\AuthServer\ServerConsole\bin\Debug\EntityFramework.SqlServer.xml
+D:\Projects\AuthServer\AuthServer\ServerConsole\bin\Debug\System.Data.SQLite.xml
+D:\Projects\AuthServer\AuthServer\ServerConsole\obj\Debug\ServerConsole.csproj.AssemblyReference.cache
+D:\Projects\AuthServer\AuthServer\ServerConsole\obj\Debug\ServerConsole.csproj.SuggestedBindingRedirects.cache
+D:\Projects\AuthServer\AuthServer\ServerConsole\obj\Debug\ServerConsole.csproj.CoreCompileInputs.cache
+D:\Projects\AuthServer\AuthServer\ServerConsole\obj\Debug\ServerConsole.csproj.CopyComplete
+D:\Projects\AuthServer\AuthServer\ServerConsole\obj\Debug\ServerConsole.exe
+D:\Projects\AuthServer\AuthServer\ServerConsole\obj\Debug\ServerConsole.pdb
