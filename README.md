@@ -3,7 +3,7 @@ A non-commercial remake of DashPong made in Unity as my first project ever built
 
 Only one instance of the game can be ran on the device simultaneously, but this can be avoided if one instance is ran in the Unity Editor
 
-To start the server, start the Authentification Server from AuthServer folder, by either running the Debug or Release version
+To start the server, start the Authentification Server from AuthServer/Debug folder, by either running the Debug or Release version
 
 Then start up the game, put in preferred credentials,Sign In/Sign Up,and enjoy playing the game with your friends.
 
