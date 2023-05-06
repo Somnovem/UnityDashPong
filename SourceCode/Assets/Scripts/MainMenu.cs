@@ -16,11 +16,6 @@ public class MainMenu : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject landingPagePanel = null;
-    public void HostLobby()
-    {
-        networkManager.StartHost();
-        landingPagePanel.SetActive(false);
-    }
 
     private void RestartLobby()
     {

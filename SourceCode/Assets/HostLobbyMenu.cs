@@ -1,10 +1,9 @@
-using System.Net;
 using UnityEngine;
 using UnityEngine.UI;
-public class JoinLobbyMenu : MonoBehaviour
+using System.Net;
+public class HostLobbyMenu : MonoBehaviour
 {
-    private NetworkManagerPong networkManager = null;
-
+   private NetworkManagerPong networkManager = null;
     void Update()
     {
         NetworkManagerPong obj = FindObjectOfType<NetworkManagerPong>();
@@ -15,8 +14,7 @@ public class JoinLobbyMenu : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject landingPagePanel = null;
     [SerializeField] private TMPro.TMP_InputField ipAddressInputField = null;
-    [SerializeField] private Button joinButton = null;
-
+    [SerializeField] private Button hostButton = null;
     private void OnEnable()
     {
         NetworkManagerPong.OnClientConnected += HandleClientConnected;
@@ -29,25 +27,25 @@ public class JoinLobbyMenu : MonoBehaviour
         NetworkManagerPong.OnClientDisconnected -= HandleClientDisconnected;
     }
 
-    public void JoinLobby()
+    public void HostLobby()
     {
         string ipAddress = ipAddressInputField.text;
         IPAddress temp;
         if(!IPAddress.TryParse(ipAddress,out temp))return;
         networkManager.networkAddress = ipAddress;
-        networkManager.StartClient();
-        joinButton.interactable = false;
+        networkManager.StartHost();
+        hostButton.interactable = false;
     }
 
     private void HandleClientConnected()
     {
-        joinButton.interactable = true;
+        hostButton.interactable = true;
         gameObject.SetActive(false);
         landingPagePanel.SetActive(false);
     }
 
     private void HandleClientDisconnected()
     {
-        joinButton.interactable = true;
+        hostButton.interactable = true;
     }
 }
