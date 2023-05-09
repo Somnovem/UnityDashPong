@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Net;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,9 +6,9 @@ using UnityEngine.SceneManagement;
 public class AuthorizeFromServer : MonoBehaviour
 {
     #region UI
+    public TMPro.TMP_InputField serverIP;
     public TMPro.TMP_InputField username;
     public TMPro.TMP_InputField password;
-
     public TMPro.TextMeshProUGUI statusText;
 
     public Button btnLogin;
@@ -92,6 +91,21 @@ public class AuthorizeFromServer : MonoBehaviour
 
     public bool CheckCredentialsFormat()
     {
+        IPAddress test;
+
+        if(!IPAddress.TryParse(serverIP.text,out test))
+        {
+            statusText.text = "Invalid IP format";
+            return false;
+        }
+
+        if(serverIP.text.StartsWith("127"))
+        {
+            statusText.text = "Can't use loopback IP";
+            return false;
+        }
+
+        AuthorizationClient.serverIP = serverIP.text;
         if(username.text.Length < 8 || username.text.Length > 16)
         {
             statusText.text = "Invalid Login length";

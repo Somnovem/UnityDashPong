@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-
+using System.IO;
 namespace ServerConsole
 {
     internal class TcpServer : IDisposable
@@ -16,11 +16,12 @@ namespace ServerConsole
         private IPAddress address;
         private List<TcpClientConnection> connectedClients;
         private ManualResetEvent clientHolder;
+        private string pathToDatabase;
 
         public delegate void StringMessageDelegate(string message);
         public event StringMessageDelegate StringMessage;
 
-        public TcpServer(IPAddress address, int port,ManualResetEvent clientHolder, string connectionString)
+        public TcpServer(IPAddress address, int port,ManualResetEvent clientHolder, string pathToDatabase,string connectionString)
         {
             this.listener = null;
             this.port = port;
@@ -28,6 +29,7 @@ namespace ServerConsole
             connectedClients = null;
             this.clientHolder = clientHolder;
             SQLiteCredentialsChecker.connectionString = connectionString;
+            this.pathToDatabase = pathToDatabase;
         }
         public Task StartListenAsync() => Task.Run(StartListen);
         public async void StartListen()
@@ -54,7 +56,11 @@ namespace ServerConsole
                     break;
                 }
 
-
+                if (!File.Exists(pathToDatabase))
+                {
+                    StringMessage?.Invoke("No database file found");
+                    break;
+                }
 
                 StringMessage?.Invoke($"Accepted: {client.Client.RemoteEndPoint}");
                 TcpClientConnection clientConnection = new TcpClientConnection(client);
@@ -62,6 +68,7 @@ namespace ServerConsole
                 clientConnection.ClientDisconnected += ClientConnection_ClientDisconnected;
                 _ = clientConnection.StartMessagingAsync();
             }
+            StopListening();
         }
         private void ClientConnection_ClientDisconnected(TcpClientConnection clientConnection)
         {

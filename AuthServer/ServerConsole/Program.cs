@@ -5,16 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Threading;
-
+using System.IO;
 namespace ServerConsole
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            string connectionString = @"Data Source=..\..\auth.db;Version=3;";
+            string pathToDatabase = "..\\..\\auth.db";
+            if (!File.Exists(pathToDatabase)) 
+            {
+                Console.WriteLine("No database file found");
+                Console.WriteLine("Press ENTER to exit...");
+                Console.ReadLine();
+                Environment.Exit(-1);
+            }
+            string connectionString = $"Data Source={pathToDatabase};Version=3;";
             ManualResetEvent manualResetEvent = new ManualResetEvent(false);
-            TcpServer mainServer = new TcpServer(IPAddress.Parse("127.0.0.1"),8001,manualResetEvent,connectionString);
+            TcpServer mainServer = new TcpServer(IPAddress.Any, 8001, manualResetEvent,pathToDatabase,connectionString);
             mainServer.StringMessage += MainServer_StringMessage;
             mainServer.StartListenAsync();
             manualResetEvent.WaitOne();

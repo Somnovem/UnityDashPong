@@ -18,9 +18,10 @@ namespace ServerConsole
                 selectCommand.Parameters.AddWithValue("@username", login);
                 using (var reader = selectCommand.ExecuteReader())
                 {
-                    if (reader.Read() && command.StartsWith("L")) // such user was found
+                    string msg = reader.Read() ? reader.GetString(0) : string.Empty;
+                    if (!string.IsNullOrEmpty(msg) && command.StartsWith("L")) // such user was found
                     {
-                        string truePassword = reader.GetString(0);
+                        string truePassword = msg;
                         if (truePassword.Equals(password))
                         {
                             bool isBanned = reader.GetBoolean(1);
@@ -43,7 +44,7 @@ namespace ServerConsole
                             return 1;
                         }
                     }
-                    if (command.StartsWith("S")) 
+                    if (command.StartsWith("S") && string.IsNullOrEmpty(msg)) 
                     {
                         var insertCommand = new SQLiteCommand("INSERT INTO Users(Username,Password,IsBanned,IsOnline) values(@username,@password,0,1)",connection);
                         insertCommand.Parameters.AddWithValue("@username", login);

@@ -9,6 +9,8 @@ public class AuthorizationClient
     public delegate void ConnectionResultDelegate(AuthorizationResult result);
     public event ConnectionResultDelegate ConnectionResult;
 
+    public static string serverIP;  
+
     public void Login(string username,string password)
     {   
         SendAuthorizationCommand("Login",username,password);
@@ -22,7 +24,7 @@ public class AuthorizationClient
     public static void Logout(string username)
     {
         TcpClient client = new TcpClient();
-        client.Connect("127.0.0.1",8001);
+        client.Connect(serverIP,8001);
         NetworkStream stream = client.GetStream();
         byte[] data = Encoding.UTF8.GetBytes($"Exit:{username}");
         stream.Write(data, 0, data.Length);
@@ -40,7 +42,7 @@ public class AuthorizationClient
             try
             {
                 _client = new TcpClient();
-                await _client.ConnectAsync("127.0.0.1", 8001); 
+                await _client.ConnectAsync("192.168.0.109", 8001); 
                 _stream = _client.GetStream();
                 var credentialMessage = $"{command}:{username} {PasswordHasher.ComputeSHA256Hash(password)}";
                 var bytesToSend = Encoding.UTF8.GetBytes(credentialMessage);
