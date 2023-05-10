@@ -17,7 +17,6 @@ public class NetworkManagerPong : NetworkManager
             Destroy(this);
             return;
         }
-        Debug.Log("Changed instance");
         Instance = this;
     }
 

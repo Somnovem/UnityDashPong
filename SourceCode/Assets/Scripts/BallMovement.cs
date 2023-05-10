@@ -63,11 +63,11 @@ public class BallMovement : NetworkBehaviour
             trail.enabled = false;
             if(isServer)
             {
-            SynchronizingStatsMessage msg = new SynchronizingStatsMessage(col.CompareTag("MyPad") ? -1 : 1,rb.velocity.magnitude);
-            NetworkServer.SendToReady(msg);
-            StartCoroutine(EnableTrailAndRestartStats());
-            StartCoroutine(RestartRound());
-            DestroyPads();
+                SynchronizingStatsMessage msg = new SynchronizingStatsMessage(col.CompareTag("MyPad") ? -1 : 1,rb.velocity.magnitude);
+                NetworkServer.SendToReady(msg);
+                StartCoroutine(EnableTrailAndRestartStats());
+                StartCoroutine(RestartRound());
+                DestroyPads();
             }
         }
 

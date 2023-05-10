@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 public class NetworkGamePlayer : NetworkBehaviour
@@ -18,6 +17,13 @@ public class NetworkGamePlayer : NetworkBehaviour
     private int bluePoints;
     private int redPoints;
     private int gamestate;
+
+    private static int currentGoalstate;
+    private static float currentBallSpeed;
+
+    private static bool ballWasSpawned;
+
+    private bool registeredHandler;
     #endregion
 
     #region Graphic variables
@@ -69,12 +75,6 @@ public class NetworkGamePlayer : NetworkBehaviour
     public string GetDisplayName() => displayName;
 
     #endregion
-    private static int currentGoalstate;
-    private static float currentBallSpeed;
-
-    private static bool ballWasSpawned;
-
-    private bool registeredHandler;
 
     void Start()
     {
@@ -182,7 +182,6 @@ public class NetworkGamePlayer : NetworkBehaviour
         rb.velocity = Vector2.zero;
         rb.transform.position = startingPosition;
         avaliableDashes = 0;
-        isInputAvaliable = true;
         dashTimer = Time.time;
     }
 
@@ -202,7 +201,6 @@ public class NetworkGamePlayer : NetworkBehaviour
     public void OnStartGameMessageReceived(StartGameMessage message)
     {
         ballWasSpawned = message.startGame;
-        StartCoroutine(UnlockMovement());
         GameStarting?.Invoke();
         
     }
@@ -229,11 +227,5 @@ public class NetworkGamePlayer : NetworkBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         trail.enabled = true;
-    }
-
-    private IEnumerator UnlockMovement()
-    {
-        yield return new WaitForSeconds(3.5f);
-        isInputAvaliable = true;
     }
 }

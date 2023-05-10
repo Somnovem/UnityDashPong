@@ -31,8 +31,8 @@ public class ScoreController : MonoBehaviour
     [SerializeField]
     private float scoreEaseInDuration = 0.15f;
 
-    private float TimeLeft = 304f;
-    private bool TimerOn = false;
+    private float TimeLeft = 300f;
+    private static bool TimerOn = false;
 
     private List<GameObject> players;
 
@@ -42,52 +42,47 @@ public class ScoreController : MonoBehaviour
         panelCanvasGroupScore = scorePanel.GetComponent<CanvasGroup>();
         panelCanvasGroupCountdown = countdownPanel.GetComponent<CanvasGroup>();
         players = new List<GameObject>();
-        TimerOn = true;
     }
 
     void Update()
     {
-        if(TimerOn)
+        if(TimeLeft >0)
         {
-            if(TimeLeft >0)
+            if(TimerOn)TimeLeft -= Time.deltaTime;
+            if(TimeLeft >=298f)
             {
-                TimeLeft -= Time.deltaTime;
-                if(TimeLeft >=298f)
+                GameObject[] eventProviders = GameObject.FindGameObjectsWithTag("Player");
+                if(eventProviders.Length == 0)return;
+                for(int i = 0; i < eventProviders.Length; ++i)
                 {
-                    GameObject[] eventProviders = GameObject.FindGameObjectsWithTag("Player");
-                    if(eventProviders.Length == 0)return;
-                    for(int i = 0; i < eventProviders.Length; ++i)
-                    {
-                        if(players.Contains(eventProviders[i]))continue;
-                        eventProviders[i].GetComponent<NetworkGamePlayer>().PointScored  +=  ShowScore;
-                        eventProviders[i].GetComponent<NetworkGamePlayer>().GameStarting +=  ShowCountdown;
-                        players.Add(eventProviders[i]);
-                    }
+                    if(players.Contains(eventProviders[i]))continue;
+                    eventProviders[i].GetComponent<NetworkGamePlayer>().PointScored  +=  ShowScore;
+                    eventProviders[i].GetComponent<NetworkGamePlayer>().GameStarting +=  ShowCountdown;
+                    players.Add(eventProviders[i]);
                 }
             }
-            else
-            {
-                TimerOn = false;
-                TimeLeft = 0f;
-                NetworkGamePlayer.isInputAvaliable = false;
-                ShowScorePanel();
-                speedText.text = "";
-                int currentRedScore = int.Parse(redScore.text);
-                int currentBlueScore = int.Parse(blueScore.text);
-                if(currentRedScore > currentBlueScore)winnerText.text = "RED WON";
-                else if(currentRedScore < currentBlueScore)winnerText.text = "BLUE WON";
-                else winnerText.text = "TIE";
-                returnButton.gameObject.SetActive(true);
-            }
-            UpdateTimer();
         }
-
+        else
+        {
+            TimerOn = false;
+            TimeLeft = 0f;
+            NetworkGamePlayer.isInputAvaliable = false;
+            ShowScorePanel();
+            speedText.text = "";
+            int currentRedScore = int.Parse(redScore.text);
+            int currentBlueScore = int.Parse(blueScore.text);
+            if(currentRedScore > currentBlueScore)winnerText.text = "RED WON";
+            else if(currentRedScore < currentBlueScore)winnerText.text = "BLUE WON";
+            else winnerText.text = "TIE";
+            returnButton.gameObject.SetActive(true);
+        }
+        UpdateTimer();
     }
 
     private void UpdateTimer()
     {
         float currentTime = TimeLeft;
-        if(currentTime != 0f)++currentTime;
+        if(currentTime != 0f && TimerOn)++currentTime;
         float minutes = Mathf.FloorToInt(currentTime / 60);
         float seconds = Mathf.FloorToInt(currentTime % 60);
         timerText.text = string.Format("{0:00}:{1:00}",minutes,seconds);
@@ -130,6 +125,7 @@ public class ScoreController : MonoBehaviour
         StartCoroutine(ChangeCountdownText(2f,"1"));
         StartCoroutine(ChangeCountdownText(3f,"Begin"));
         StartCoroutine(HideScore(3.5f,panelCanvasGroupCountdown));
+        StartCoroutine(EnableTimer());
     }
 
     private IEnumerator ChangeCountdownText(float time, string text)
@@ -138,9 +134,19 @@ public class ScoreController : MonoBehaviour
         countdownText.text = text;
     }
 
+    private IEnumerator EnableTimer()
+    {
+        yield return new WaitForSeconds(3.5f);
+        TimerOn = true;
+    }
+
     private IEnumerator HideScore(float time,CanvasGroup panel)
     {
         yield return new WaitForSeconds(time);
-        LeanTween.alphaCanvas(panel,0f,scoreEaseInDuration);
+        if(string.IsNullOrEmpty(winnerText.text))
+        {
+            LeanTween.alphaCanvas(panel,0f,scoreEaseInDuration);
+            NetworkGamePlayer.isInputAvaliable = true;
+        }
     }
 }
