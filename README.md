@@ -10,4 +10,6 @@ Then start up the game, put in preferred credentials,Sign In/Sign Up,and enjoy p
 If the server host should desire, he can ban certain login by changing the corresponding value in the .db file(In the future it will become possible
 to do from the server window, by running a command or something along those lines)
 
-If the authentification server for some reason stops responding, even though I doesn't crash, just restart it
+If the authentification server for some reason stops responding, even though It doesn't crash, just restart it
+
+Known problem with pressing the join button when the requested ip isn't hosting a room all UI can just disappear, restart the game
