@@ -7,7 +7,7 @@ public class JoinLobbyMenu : MonoBehaviour
 
     void Start()
     {
-        ipAddressInputField.text = AuthorizationClient.serverIP;
+        ipAddressInputField.text = AuthorizationClient.serverIP.Substring(0,AuthorizationClient.serverIP.LastIndexOf('.')+1);
     }
 
     void Update()
