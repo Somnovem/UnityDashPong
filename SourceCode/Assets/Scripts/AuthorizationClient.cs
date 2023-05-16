@@ -42,7 +42,7 @@ public class AuthorizationClient
             try
             {
                 _client = new TcpClient();
-                await _client.ConnectAsync("192.168.0.109", 8001); 
+                await _client.ConnectAsync(serverIP, 8001); 
                 _stream = _client.GetStream();
                 var credentialMessage = $"{command}:{username} {PasswordHasher.ComputeSHA256Hash(password)}";
                 var bytesToSend = Encoding.UTF8.GetBytes(credentialMessage);
